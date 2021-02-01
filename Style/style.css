@@ -12,6 +12,7 @@ body {
 }
 
 body {
+  font-family: "Press Start 2P", cursive;
   font-size: 1rem;
   line-height: 1.5;
   color: #212529;
@@ -23,7 +24,6 @@ body {
 }
 
 .title {
-  font-family: "Press Start 2P", cursive;
   text-align: center;
   color: #4ec54e;
   margin-top: 0;
@@ -41,29 +41,60 @@ body {
 
 .board-wrapper {
   border: 2px solid #4ec54e;
-  height: 70vh;
+  height: 70vw;
+  max-height: 41rem;
+  min-height: 38rem;
   min-width: 21rem;
-  max-width: 650px;
-  width: 60vw;
+  max-width: 35rem;
+  width: 80vw;
   margin: auto;
 }
 
+.game-data {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.playerData {
+  width: 50%;
+  text-align: center;
+  color: #4ec54e;
+}
+
 .game-wrapper {
+  font-family: "Comfortaa", cursive;
+  color: #4ec54e;
+  font-size: calc(((30rem / 3) * 0.4) + 1.1vw);
+  margin: auto;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 33% 33% 33%;
       grid-template-columns: 33% 33% 33%;
   -ms-grid-rows: 33% 33% 33%;
       grid-template-rows: 33% 33% 33%;
+  width: 70vw;
+  height: 70vw;
+  max-width: 30rem;
+  max-height: 30rem;
+  vertical-align: center;
   text-align: center;
-  width: 100%;
-  margin: 0;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+@media (min-width: 400px) {
+  .game-wrapper {
+    font-size: calc(((30rem / 3) * 0.4) + 2.1vw);
+  }
 }
 
 .square {
-  background: white;
-  min-height: 90px;
-  min-width: 90px;
   height: 100%;
   width: 100%;
 }

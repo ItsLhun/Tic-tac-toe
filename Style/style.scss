@@ -13,6 +13,7 @@ body {
 }
 
 body {
+  font-family: "Press Start 2P", cursive;
   font-size: 1rem;
   line-height: 1.5;
   color: #212529;
@@ -22,7 +23,6 @@ body {
   margin: 1rem auto;
 }
 .title {
-  font-family: "Press Start 2P", cursive;
   text-align: center;
   color: $themeColor;
   margin-top: 0;
@@ -37,24 +37,44 @@ body {
 
 .board-wrapper {
   border: 2px solid $themeColor;
-  height: 70vh;
+  height: 70vw;
+  max-height: 41rem;
+  min-height: 38rem;
+
   min-width: 21rem;
-  max-width: 650px;
-  width: 60vw;
+  max-width: 35rem;
+  width: 80vw;
   margin: auto;
 }
+.game-data {
+  display: flex;
+  flex-direction: row;
+}
+.playerData {
+  width: 50%;
+  text-align: center;
+  color: $themeColor;
+}
 .game-wrapper {
+  font-family: "Comfortaa", cursive;
+  color: $themeColor;
+  font-size: calc(((30rem / 3) * 0.4) + 1.1vw);
+  margin: auto;
   display: grid;
   grid-template-columns: 33% 33% 33%;
   grid-template-rows: 33% 33% 33%;
+  width: 70vw;
+  height: 70vw;
+  max-width: 30rem;
+  max-height: 30rem;
+  @media (min-width: 400px) {
+    font-size: calc(((30rem / 3) * 0.4) + 2.1vw);
+  }
+  vertical-align: center;
   text-align: center;
-  width: 100%;
-  margin: 0;
+  justify-content: center;
 }
 .square {
-  background: white;
-  min-height: 90px;
-  min-width: 90px;
   height: 100%;
   width: 100%;
 }
