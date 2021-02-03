@@ -120,6 +120,8 @@ body {
 .sq1 {
   margin-right: 0;
   margin-bottom: 0;
+  grid-row: 0 /1;
+  grid-column: 0 /1;
   grid: 1 1;
   border-right: 3px solid #4ec54e;
   border-bottom: 3px solid #4ec54e;
