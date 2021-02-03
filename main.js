@@ -6,6 +6,7 @@
       ["", "", ""],
     ];
     const boardArray = document.querySelectorAll(".square");
+
     return { board, boardArray };
   })();
 
