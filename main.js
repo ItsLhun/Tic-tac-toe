@@ -1,22 +1,30 @@
 (function game() {
-  const GameBoard = () => {
+  const gameBoard = (() => {
     let board = [
-      ["", "O", "O"],
-      ["O", "O", "X"],
-      ["O", "O", "X"],
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
     ];
     const boardArray = document.querySelectorAll(".square");
-    boardArray.forEach((item) => {
-      item.addEventListener("click", () => {
-        console.log(item);
-        board[0][0] = "X";
-      });
-    });
     return { board, boardArray };
-  };
+  })();
 
-  (function renderGame(gameBoard) {
-    console.log(gameBoard);
+  // add Event listener
+
+  gameBoard.boardArray.forEach((item) => {
+    item.addEventListener("click", () => {
+      console.log(item);
+      let searchX = item.id.charAt(1);
+      let searchY = item.id.charAt(2);
+      console.log(gameBoard.board[searchX][searchY]);
+      if (!gameBoard.board[searchX][searchY]) {
+        gameBoard.board[searchX][searchY] = "O";
+      }
+      renderGame(gameBoard);
+    });
+  });
+
+  function renderGame(gameBoard) {
     counter = 0;
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -25,7 +33,8 @@
         counter++;
       }
     }
-  })(GameBoard());
+  }
+
   const Player = (sign) => {
     if (sign == "X" || sign == "O") {
       const playerSign = sign;
@@ -38,4 +47,6 @@
     };
     return { playerSign, increaseScore };
   };
+
+  renderGame(gameBoard);
 })();

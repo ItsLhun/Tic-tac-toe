@@ -89,9 +89,10 @@ body {
     width: 100%;
     margin: 0;
   }
+  user-select: none;
 }
 
-.sq1 {
+#A00 {
   margin-right: 0;
   margin-bottom: 0;
   grid-row: 0 /1;
@@ -101,39 +102,39 @@ body {
   border-right: 3px solid $themeColor;
   border-bottom: 3px solid $themeColor;
 }
-.sq2 {
+#A01 {
   margin-right: 0;
   margin-bottom: 0;
   grid: 1 2;
   border-right: 3px solid $themeColor;
   border-bottom: 3px solid $themeColor;
 }
-.sq3 {
+#A02 {
   grid: 1 3;
   border-bottom: 3px solid $themeColor;
 }
-.sq4 {
+#A10 {
   grid: 2 1;
   border-right: 3px solid $themeColor;
   border-bottom: 3px solid $themeColor;
 }
-.sq5 {
+#A11 {
   grid: 2 2;
   border-right: 3px solid $themeColor;
   border-bottom: 3px solid $themeColor;
 }
-.sq6 {
+#A12 {
   grid: 2 3;
   border-bottom: 3px solid $themeColor;
 }
-.sq7 {
+#A20 {
   grid: 3 1;
   border-right: 3px solid $themeColor;
 }
-.sq8 {
+#A21 {
   grid: 3 2;
   border-right: 3px solid $themeColor;
 }
-.sq9 {
+#A22 {
   grid: 3 3;
 }
