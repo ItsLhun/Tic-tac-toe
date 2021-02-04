@@ -61,11 +61,18 @@ body {
   border: 2px solid #4ec54e;
   height: 70vw;
   max-height: 41rem;
-  min-height: 40rem;
+  min-height: 43rem;
   min-width: 21rem;
   max-width: 35rem;
   width: 80vw;
   margin: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .game-data {
@@ -100,6 +107,22 @@ body {
 
 .playerNumber {
   font-size: 0.9rem;
+}
+
+.active-player {
+  color: red;
+  text-decoration: underline;
+}
+
+.reset-btn {
+  border-radius: 5px;
+  border: 1px solid #4ec54e;
+  height: 29px;
+  margin: 15px auto;
+}
+
+.reset-btn:hover {
+  background-color: red;
 }
 
 .game-wrapper {

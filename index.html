@@ -18,19 +18,20 @@
     <title>Tic-Tac-Toe</title>
   </head>
   <body>
+    modal 
     <div class="titleWrapper"><h1 class="title">Tic-Tac-Toe</h1></div>
     <div class="board-wrapper">
       <div class="game-data">
         <div class="playerData">
           <p class="playerNumber">Player 1</p>
           <p class="custom-list">Human</p>
-          <select name="symbol" id="symbol-P1"" class="custom-list">
-            <option value="X">X</option>
-            <option value="O">O</option>
-          </select>
+          <div>            
+            <input type="radio" name="radOne" value="X" class="radio-select" unchecked>X</input>
+            <input type="radio" name="radOne" value="O" class="radio-select">O</input>
+          </div>
         </div>
         <div class="playerData">
-          <p class="playerNumber">Player 2</p>
+          <p class="playerNumber active-player">Player 2</p>
           <select name="secondPlayer" id="secondPlayer" class="custom-list">
             <option value="selector" selected disabled>(Select one)</option>
             <option value="human">Human</option>
@@ -39,7 +40,10 @@
             <option value="impAI">AI Hard</option>
             <option value="impAI">Impossible</option>
           </select>
-          <p id="symbol-P2" class="custom-list">X</p>
+          <div>
+            <input type="radio" name="radTwo" value="X" class="radio-select">X</input>
+            <input type="radio" name="radTwo" value="O" class="radio-select">O</input>
+            </div>
         </div>
       </div>
       <div class="game-wrapper">
@@ -53,6 +57,7 @@
         <div id="A21" class="square"><p></p></div>
         <div id="A22" class="square"><p></p></div>
       </div>
+      <button id="gameReset" class="reset-btn custom-list">Reset</button>
     </div>
 
     <script src="main.js"></script>

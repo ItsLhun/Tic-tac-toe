@@ -25,12 +25,45 @@
   });
 
   // DOM query
-  const playerOneSymbol = document.querySelector("#symbol-P1");
-  const playerTwoSymbol = document.querySelector("#symbol-P2");
-  if (playerOneSymbol.nodeValue === "X") {
-    playerTwoSymbol.textContent = "O";
-  } else {
-    playerTwoSymbol.textContent = "X";
+  const radioBtns = document.querySelectorAll(".radio-select");
+  const resetBtn = document.querySelector("#gameReset");
+
+  // radio buttons exclude each otther
+  const checkButtons = () => {
+    switch (true) {
+      case radioBtns[0].checked:
+        radioBtns[2].checked = false;
+        radioBtns[3].checked = true;
+        break;
+      case radioBtns[1].checked:
+        radioBtns[3].checked = false;
+        radioBtns[2].checked = true;
+        break;
+      case radioBtns[2].checked:
+        radioBtns[0].checked = false;
+        radioBtns[1].checked = true;
+        break;
+      case radioBtns[3].checked:
+        radioBtns[1].checked = false;
+        radioBtns[0].checked = true;
+        break;
+    }
+    resetGame();
+  };
+  radioBtns.forEach((element) => {
+    element.addEventListener("click", checkButtons);
+  });
+
+  //reset game
+  resetBtn.addEventListener("click", resetGame);
+
+  function resetGame() {
+    gameBoard.board = [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ];
+    renderGame(gameBoard);
   }
 
   function renderGame(gameBoard) {

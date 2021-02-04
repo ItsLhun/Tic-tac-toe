@@ -56,12 +56,13 @@ body {
   border: 2px solid $themeColor;
   height: 70vw;
   max-height: 41rem;
-  min-height: 40rem;
-
+  min-height: 43rem;
   min-width: 21rem;
   max-width: 35rem;
   width: 80vw;
   margin: auto;
+  display: flex;
+  flex-direction: column;
 }
 .game-data {
   display: flex;
@@ -80,6 +81,22 @@ body {
 .playerNumber {
   font-size: 0.9rem;
 }
+
+.active-player {
+  color: red;
+  text-decoration: underline;
+}
+
+.reset-btn {
+  border-radius: 5px;
+  border: 1px solid $themeColor;
+  height: 29px;
+  margin: 15px auto;
+  &:hover {
+    background-color: red;
+  }
+}
+
 .game-wrapper {
   font-family: "Comfortaa", cursive;
   color: $themeColor;
