@@ -35,6 +35,23 @@ body {
   }
 }
 
+.custom-list {
+  font-family: inherit;
+  background: none;
+  color: $themeColor;
+  border: none;
+  text-align: center;
+  font-size: 0.7rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 150px;
+  option {
+    width: 10px !important;
+    color: red;
+    margin: 0;
+  }
+}
+
 .board-wrapper {
   border: 2px solid $themeColor;
   height: 70vw;
@@ -54,6 +71,14 @@ body {
   width: 50%;
   text-align: center;
   color: $themeColor;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.playerNumber {
+  font-size: 0.9rem;
 }
 .game-wrapper {
   font-family: "Comfortaa", cursive;

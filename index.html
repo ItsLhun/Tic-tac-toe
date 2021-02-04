@@ -22,14 +22,24 @@
     <div class="board-wrapper">
       <div class="game-data">
         <div class="playerData">
-          <p>Player 1</p>
-          <input type="text" class="name-input" />
-          <p>Score: <span>0</span></p>
+          <p class="playerNumber">Player 1</p>
+          <p class="custom-list">Human</p>
+          <select name="symbol" id="symbol-P1"" class="custom-list">
+            <option value="X">X</option>
+            <option value="O">O</option>
+          </select>
         </div>
         <div class="playerData">
-          <p>Player 2</p>
-          <input type="text" class="name-input" />
-          <p>Score: <span>0</span></p>
+          <p class="playerNumber">Player 2</p>
+          <select name="secondPlayer" id="secondPlayer" class="custom-list">
+            <option value="selector" selected disabled>(Select one)</option>
+            <option value="human">Human</option>
+            <option value="easyAI">AI Easy</option>
+            <option value="medAI">AI Medium</option>
+            <option value="impAI">AI Hard</option>
+            <option value="impAI">Impossible</option>
+          </select>
+          <p id="symbol-P2" class="custom-list">X</p>
         </div>
       </div>
       <div class="game-wrapper">

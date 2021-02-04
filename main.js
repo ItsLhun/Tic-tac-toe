@@ -11,7 +11,6 @@
   })();
 
   // add Event listener
-
   gameBoard.boardArray.forEach((item) => {
     item.addEventListener("click", () => {
       console.log(item);
@@ -24,6 +23,15 @@
       renderGame(gameBoard);
     });
   });
+
+  // DOM query
+  const playerOneSymbol = document.querySelector("#symbol-P1");
+  const playerTwoSymbol = document.querySelector("#symbol-P2");
+  if (playerOneSymbol.nodeValue === "X") {
+    playerTwoSymbol.textContent = "O";
+  } else {
+    playerTwoSymbol.textContent = "X";
+  }
 
   function renderGame(gameBoard) {
     counter = 0;
