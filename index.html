@@ -18,12 +18,12 @@
     <title>Tic-Tac-Toe</title>
   </head>
   <body>
-    modal 
+    
     <div class="titleWrapper"><h1 class="title">Tic-Tac-Toe</h1></div>
     <div class="board-wrapper">
       <div class="game-data">
         <div class="playerData">
-          <p class="playerNumber">Player 1</p>
+          <p id="playerTag-one" class="playerNumber">Player 1</p>
           <p class="custom-list">Human</p>
           <div>            
             <input type="radio" name="radOne" value="X" class="radio-select" unchecked>X</input>
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="playerData">
-          <p class="playerNumber active-player">Player 2</p>
+          <p id="playerTag-two" class="playerNumber active-player">Player 2</p>
           <select name="secondPlayer" id="secondPlayer" class="custom-list">
             <option value="selector" selected disabled>(Select one)</option>
             <option value="human">Human</option>

@@ -27,6 +27,9 @@
   // DOM query
   const radioBtns = document.querySelectorAll(".radio-select");
   const resetBtn = document.querySelector("#gameReset");
+  const playerOneTitle = document.querySelector("#playerTag-One");
+  const playerTwoTitle = document.querySelector("#playerTag-Two");
+  const secondPlayerType = document.querySelector("#secondPlayer");
 
   // radio buttons exclude each otther
   const checkButtons = () => {
@@ -78,17 +81,28 @@
   }
 
   const Player = (sign) => {
-    if (sign == "X" || sign == "O") {
-      const playerSign = sign;
-    } else {
-      return console.error("Invalid player sign");
-    }
-    let score = 0;
-    const increaseScore = () => {
-      score++;
-    };
-    return { playerSign, increaseScore };
+    let playerSign = sign;
+    return { playerSign };
   };
+
+  //create Players
+
+  let playerOne;
+  let playerTwo;
+
+  if (radioBtns[0]) {
+    playerOne = Player("X");
+    playerTwo = Player("O");
+  } else {
+    playerTwo = Player("X");
+    playerOne = Player("O");
+  }
+
+  //query player 2 selection
+  secondPlayerType.addEventListener("change", () => {
+    playerTwo.type = secondPlayerType.value;
+    resetGame();
+  });
 
   renderGame(gameBoard);
 })();
