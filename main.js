@@ -27,8 +27,8 @@
   // DOM query
   const radioBtns = document.querySelectorAll(".radio-select");
   const resetBtn = document.querySelector("#gameReset");
-  const playerOneTitle = document.querySelector("#playerTag-One");
-  const playerTwoTitle = document.querySelector("#playerTag-Two");
+  const playerOneTitle = document.querySelector("#playerTag-one");
+  const playerTwoTitle = document.querySelector("#playerTag-two");
   const secondPlayerType = document.querySelector("#secondPlayer");
 
   // radio buttons exclude each otther
@@ -67,6 +67,7 @@
       ["", "", ""],
     ];
     renderGame(gameBoard);
+    startGame();
   }
 
   function renderGame(gameBoard) {
@@ -80,9 +81,24 @@
     }
   }
 
+  function checkWin(){
+    if (gameBoard.board[]){
+      
+    }
+    
+  }
+
   const Player = (sign) => {
     let playerSign = sign;
-    return { playerSign };
+    let goesFirst;
+    if (playerSign === "X") {
+      goesFirst = true;
+    } else {
+      goesFirst = false;
+    }
+    const getGoesFirst = () => goesFirst;
+    const getPlayerSign = () => playerSign;
+    return { getPlayerSign, getGoesFirst };
   };
 
   //create Players
@@ -105,4 +121,17 @@
   });
 
   renderGame(gameBoard);
+
+  function startGame() {
+    if (playerOne.getGoesFirst) {
+      console.log("here");
+      playerOneTitle.classList.add("active-player");
+      playerTwoTitle.classList.remove("active-player");
+    } else {
+      playerOneTitle.classList.remove("active-player");
+      playerTwoTitle.classList.add("active-player");
+    }
+  }
+  console.log(playerOne.getGoesFirst());
+  console.log(playerTwo.getGoesFirst());
 })();
