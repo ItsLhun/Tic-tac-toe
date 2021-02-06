@@ -10,19 +10,9 @@
     return { board, boardArray };
   })();
 
-  // add Event listener
-  gameBoard.boardArray.forEach((item) => {
-    item.addEventListener("click", () => {
-      console.log(item);
-      let searchX = item.id.charAt(1);
-      let searchY = item.id.charAt(2);
-      console.log(gameBoard.board[searchX][searchY]);
-      if (!gameBoard.board[searchX][searchY]) {
-        gameBoard.board[searchX][searchY] = "O";
-      }
-      renderGame(gameBoard);
-    });
-  });
+  //create Players
+  let playerOne;
+  let playerTwo;
 
   // DOM query
   const radioBtns = document.querySelectorAll(".radio-select");
@@ -61,12 +51,26 @@
   resetBtn.addEventListener("click", resetGame);
 
   function resetGame() {
+    checkWin.win = false;
+    console.log("game reset!");
     gameBoard.board = [
       ["", "", ""],
       ["", "", ""],
       ["", "", ""],
     ];
     renderGame(gameBoard);
+
+    if (radioBtns[0].checked) {
+      playerOne = Player("X");
+      playerTwo = Player("O");
+    } else {
+      playerTwo = Player("X");
+      playerOne = Player("O");
+    }
+
+    playerOneTitle.classList.remove("active-player");
+    playerTwoTitle.classList.remove("active-player");
+    console.log(playerOne.getPlayerSign());
     startGame();
   }
 
@@ -81,38 +85,30 @@
     }
   }
 
-  function checkWin(){
-    if (gameBoard.board[]){
-      
+  const allEqual = (array) => array.every((val) => val === array[0]);
+
+  // TO-DO fix win when every on the row is empty.
+  function checkWin() {
+    let win;
+    console.log(allEqual(gameBoard.board[0]));
+    if (
+      allEqual(gameBoard.board[0]) ||
+      allEqual(gameBoard.board[1]) ||
+      allEqual(gameBoard.board[2])
+    ) {
+      console.log("victory");
+      win = true;
     }
-    
+    console.log("got here");
+    return { win };
   }
 
   const Player = (sign) => {
     let playerSign = sign;
-    let goesFirst;
-    if (playerSign === "X") {
-      goesFirst = true;
-    } else {
-      goesFirst = false;
-    }
-    const getGoesFirst = () => goesFirst;
+    let nextTurn = false;
     const getPlayerSign = () => playerSign;
-    return { getPlayerSign, getGoesFirst };
+    return { getPlayerSign, nextTurn };
   };
-
-  //create Players
-
-  let playerOne;
-  let playerTwo;
-
-  if (radioBtns[0]) {
-    playerOne = Player("X");
-    playerTwo = Player("O");
-  } else {
-    playerTwo = Player("X");
-    playerOne = Player("O");
-  }
 
   //query player 2 selection
   secondPlayerType.addEventListener("change", () => {
@@ -123,15 +119,34 @@
   renderGame(gameBoard);
 
   function startGame() {
-    if (playerOne.getGoesFirst) {
-      console.log("here");
+    let gameStarted = false;
+    if (playerOne.getPlayerSign() === "X" && gameStarted === false) {
+      playerOne.nextTurn = true;
+      playerTwo.nextTurn = false;
+      console.log("onStartGame");
       playerOneTitle.classList.add("active-player");
       playerTwoTitle.classList.remove("active-player");
-    } else {
+      gameStarted = true;
+    } else if (playerTwo.getPlayerSign() === "X" && gameStarted === false) {
+      playerOne.nextTurn = false;
+      playerTwo.nextTurn = true;
       playerOneTitle.classList.remove("active-player");
       playerTwoTitle.classList.add("active-player");
+      gameStarted = true;
     }
+    // add Event listener
+    gameBoard.boardArray.forEach((item) => {
+      item.addEventListener("click", () => {
+        let searchX = item.id.charAt(1);
+        let searchY = item.id.charAt(2);
+        if (gameBoard.board[searchX][searchY] === "") {
+          gameBoard.board[searchX][searchY] = "O";
+        }
+        renderGame(gameBoard);
+        checkWin();
+      });
+    });
   }
-  console.log(playerOne.getGoesFirst());
-  console.log(playerTwo.getGoesFirst());
+  console.log(playerOne);
+  console.log(playerTwo);
 })();
