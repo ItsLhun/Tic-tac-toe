@@ -233,4 +233,8 @@ body {
 #A22 {
   grid: 3 3;
 }
+
+.selector {
+  color: red;
+}
 /*# sourceMappingURL=style.css.map */

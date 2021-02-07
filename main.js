@@ -14,6 +14,9 @@
   let playerOne;
   let playerTwo;
   let activePlayer;
+  let tieCounter = 0;
+
+  let gameStarted = false;
 
   // DOM query
   const radioBtns = document.querySelectorAll(".radio-select");
@@ -50,10 +53,19 @@
 
   //reset game
   resetBtn.addEventListener("click", resetGame);
-  let gameStarted = false;
+
+  //query player 2 selection
+
+  secondPlayerType.addEventListener("change", () => {
+    playerTwo.type = secondPlayerType.value;
+    secondPlayerType.classList.remove("selector");
+    resetGame();
+  });
+
   function resetGame() {
     checkWin.win = false;
     gameStarted = false;
+    tieCounter = 0;
     console.log("game reset!");
     gameBoard.board = [
       ["", "", ""],
@@ -68,9 +80,13 @@
       playerTwo = Player("X");
       playerOne = Player("O");
     }
+    playerOne.type = "Human";
+    playerTwo.type = secondPlayerType.value;
+    console.log(playerTwo.type);
+    if (secondPlayerType.value !== "selector") {
+      secondPlayerType.classList.remove("selector");
+    }
 
-    playerOneTitle.classList.remove("active-player");
-    playerTwoTitle.classList.remove("active-player");
     renderGame(gameBoard);
     startGame();
   }
@@ -94,6 +110,7 @@
     } else {
       if (activePlayer === playerOne) {
         activePlayer = playerTwo;
+
         playerOneTitle.classList.remove("active-player");
         playerTwoTitle.classList.add("active-player");
       } else if (activePlayer === playerTwo) {
@@ -117,22 +134,29 @@
 
   const checkWin = () => {
     console.log("checking win");
-    const allEqual = (array) => {
-      return array.every((val) => {
-        if (val === "X" || val === "O") {
-          return val === array[0];
-        }
-      });
-    };
     let win = false;
     let winningSymbol;
-    if (
-      allEqual(gameBoard.board[0]) ||
-      allEqual(gameBoard.board[1]) ||
-      allEqual(gameBoard.board[2])
-    ) {
-      win = true;
+    for (let i = 0; i < 3; i++) {
+      let row = 0;
+      for (let j = 0; j < 3; j++) {
+        if (gameBoard.board[i][j] === "X") {
+          row += 1;
+        } else if (gameBoard.board[i][j] === "O") {
+          row -= 1;
+        }
+      }
+      if (row === 3 || row === -3) {
+        if (row === 3) {
+          winningSymbol = "X";
+        } else {
+          winningSymbol = "O";
+        }
+        win = true;
+      } else {
+        row = 0;
+      }
     }
+
     if (gameBoard.board[1][1] === "X" || gameBoard.board[1][1] === "O") {
       if (
         gameBoard.board[0][0] === gameBoard.board[1][1] &&
@@ -150,7 +174,7 @@
       }
     }
     for (let i = 0; i < 3; i++) {
-      col = 0;
+      let col = 0;
       for (let j = 0; j < 3; j++) {
         if (gameBoard.board[j][i] === "X") {
           col += 1;
@@ -159,13 +183,27 @@
         }
       }
       if (col === 3 || col === -3) {
+        if (col === 3) {
+          winningSymbol = "X";
+        } else {
+          winningSymbol = "O";
+        }
         win = true;
       } else {
         col = 0;
       }
     }
     if (win === true) {
-      alert("victory! " + winningSymbol);
+      if (playerOne.getPlayerSign() === winningSymbol) {
+        alert("Player One wins!");
+      }
+      if (playerTwo.getPlayerSign() === winningSymbol) {
+        alert("Player Two wins!");
+      }
+    }
+    tieCounter++;
+    if (tieCounter === 9 && win === false) {
+      alert("It's a tie!");
     }
     return { win };
   };
@@ -177,30 +215,57 @@
     return { getPlayerSign, nextTurn };
   };
 
-  //query player 2 selection
-  secondPlayerType.addEventListener("change", () => {
-    playerTwo.type = secondPlayerType.value;
-    resetGame();
-  });
-
   renderGame(gameBoard);
 
   function startGame() {
+    swapPlayer();
+    console.log(activePlayer);
     gameBoard.boardArray.forEach((item) => {
-      item.addEventListener("click", () => {
-        let searchX = item.id.charAt(1);
-        let searchY = item.id.charAt(2);
-        //swapPlayer();
-        if (gameBoard.board[searchX][searchY] === "") {
-          gameBoard.board[searchX][searchY] = activePlayer.getPlayerSign();
-          // gameBoard.board[searchX][searchY] = "X";
+      if (playerTwo.type === "human") {
+        console.log("Player two is human");
+        item.addEventListener("click", () => {
+          let searchX = item.id.charAt(1);
+          let searchY = item.id.charAt(2);
+          if (gameBoard.board[searchX][searchY] === "") {
+            gameBoard.board[searchX][searchY] = activePlayer.getPlayerSign();
+            console.log(activePlayer.getPlayerSign());
+            renderGame(gameBoard);
+            checkWin();
+            swapPlayer();
+          }
+        });
+      } else {
+        if (activePlayer === playerOne) {
+          item.addEventListener("click", () => {
+            let searchX = item.id.charAt(1);
+            let searchY = item.id.charAt(2);
+            if (gameBoard.board[searchX][searchY] === "") {
+              gameBoard.board[searchX][searchY] = activePlayer.getPlayerSign();
+              renderGame(gameBoard);
+              checkWin();
+              swapPlayer();
+            }
+          });
+        } else {
+          console.log(playerTwo);
           console.log(activePlayer.getPlayerSign());
+          console.log("this hsould be AI");
+          gameBoard.board[randomIntFromInterval(0, 2)][
+            randomIntFromInterval(0, 2)
+          ] = activePlayer.getPlayerSign();
+          renderGame(gameBoard);
+          checkWin();
+          swapPlayer();
         }
-        renderGame(gameBoard);
-        checkWin();
-        swapPlayer();
-      });
+      }
     });
+  }
+
+  function aiPlay() {}
+
+  function randomIntFromInterval(min, max) {
+    // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
   console.log(playerOne);
   console.log(playerTwo);
