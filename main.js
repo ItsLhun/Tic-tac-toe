@@ -119,6 +119,7 @@
         playerTwoTitle.classList.remove("active-player");
       }
     }
+    console.log("Active player is: " + activePlayer + activePlayer.type);
   }
 
   function renderGame(gameBoard) {
@@ -236,6 +237,7 @@
         });
       } else {
         if (activePlayer === playerOne) {
+          console.log("only player One");
           item.addEventListener("click", () => {
             let searchX = item.id.charAt(1);
             let searchY = item.id.charAt(2);
@@ -244,24 +246,38 @@
               renderGame(gameBoard);
               checkWin();
               swapPlayer();
+              if (checkWin.win === false || tieCounter < 9) {
+                aiPlay();
+              }
             }
           });
-        } else {
-          console.log(playerTwo);
-          console.log(activePlayer.getPlayerSign());
-          console.log("this hsould be AI");
-          gameBoard.board[randomIntFromInterval(0, 2)][
-            randomIntFromInterval(0, 2)
-          ] = activePlayer.getPlayerSign();
-          renderGame(gameBoard);
-          checkWin();
-          swapPlayer();
+        } else if (
+          activePlayer.type !== "human" &&
+          (checkWin.win === false || tieCounter < 9)
+        ) {
+          aiPlay();
         }
       }
     });
   }
 
-  function aiPlay() {}
+  function playerPlay() {}
+  function aiPlay() {
+    console.log("this hsould be AI");
+    let randX = randomIntFromInterval(0, 2);
+    let randY = randomIntFromInterval(0, 2);
+    if (
+      gameBoard.board[randX][randY] === "" &&
+      (checkWin.win === false || tieCounter < 9)
+    ) {
+      gameBoard.board[randX][randY] = activePlayer.getPlayerSign();
+      renderGame(gameBoard);
+      checkWin();
+      swapPlayer();
+    } else if (checkWin.win === false || tieCounter < 9) {
+      aiPlay();
+    }
+  }
 
   function randomIntFromInterval(min, max) {
     // min and max included
