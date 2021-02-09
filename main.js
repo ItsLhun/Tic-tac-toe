@@ -63,7 +63,7 @@
   });
 
   function resetGame() {
-    checkWin.win = false;
+    win = false;
     gameStarted = false;
     tieCounter = 0;
     console.log("game reset!");
@@ -80,7 +80,7 @@
       playerTwo = Player("X");
       playerOne = Player("O");
     }
-    playerOne.type = "Human";
+    playerOne.type = "human";
     playerTwo.type = secondPlayerType.value;
     console.log(playerTwo.type);
     if (secondPlayerType.value !== "selector") {
@@ -107,7 +107,7 @@
         playerTwoTitle.classList.add("active-player");
         gameStarted = true;
       }
-    } else {
+    } else if (win !== true) {
       if (activePlayer === playerOne) {
         activePlayer = playerTwo;
 
@@ -118,6 +118,8 @@
         playerOneTitle.classList.add("active-player");
         playerTwoTitle.classList.remove("active-player");
       }
+    } else {
+      return;
     }
     console.log("Active player is: " + activePlayer + activePlayer.type);
   }
@@ -132,10 +134,9 @@
       }
     }
   }
-
+  let win;
   const checkWin = () => {
     console.log("checking win");
-    let win = false;
     let winningSymbol;
     for (let i = 0; i < 3; i++) {
       let row = 0;
@@ -197,8 +198,7 @@
     if (win === true) {
       if (playerOne.getPlayerSign() === winningSymbol) {
         alert("Player One wins!");
-      }
-      if (playerTwo.getPlayerSign() === winningSymbol) {
+      } else if (playerTwo.getPlayerSign() === winningSymbol) {
         alert("Player Two wins!");
       }
     }
@@ -206,7 +206,7 @@
     if (tieCounter === 9 && win === false) {
       alert("It's a tie!");
     }
-    return { win };
+    return;
   };
 
   const Player = (sign) => {
@@ -221,68 +221,63 @@
   function startGame() {
     swapPlayer();
     console.log(activePlayer);
+    if (activePlayer.type !== "human" && win !== true && tieCounter < 9) {
+      console.log("should only execute once");
+      aiPlay();
+    }
     gameBoard.boardArray.forEach((item) => {
-      if (playerTwo.type === "human") {
-        console.log("Player two is human");
-        item.addEventListener("click", () => {
+      item.addEventListener("click", () => {
+        if (activePlayer.type === "human") {
           let searchX = item.id.charAt(1);
           let searchY = item.id.charAt(2);
           if (gameBoard.board[searchX][searchY] === "") {
             gameBoard.board[searchX][searchY] = activePlayer.getPlayerSign();
-            console.log(activePlayer.getPlayerSign());
             renderGame(gameBoard);
             checkWin();
-            swapPlayer();
-          }
-        });
-      } else {
-        if (activePlayer === playerOne) {
-          console.log("only player One");
-          item.addEventListener("click", () => {
-            let searchX = item.id.charAt(1);
-            let searchY = item.id.charAt(2);
-            if (gameBoard.board[searchX][searchY] === "") {
-              gameBoard.board[searchX][searchY] = activePlayer.getPlayerSign();
-              renderGame(gameBoard);
-              checkWin();
+            if (win !== true && tieCounter < 9) {
+              console.log(win + " " + tieCounter);
+              console.log("this is inside playeroneplay");
               swapPlayer();
-              if (checkWin.win === false || tieCounter < 9) {
+              if (activePlayer.type !== "human") {
                 aiPlay();
               }
             }
-          });
-        } else if (
-          activePlayer.type !== "human" &&
-          (checkWin.win === false || tieCounter < 9)
-        ) {
-          aiPlay();
+          }
         }
-      }
+      });
     });
   }
 
   function playerPlay() {}
+
   function aiPlay() {
-    console.log("this hsould be AI");
-    let randX = randomIntFromInterval(0, 2);
-    let randY = randomIntFromInterval(0, 2);
-    if (
-      gameBoard.board[randX][randY] === "" &&
-      (checkWin.win === false || tieCounter < 9)
-    ) {
-      gameBoard.board[randX][randY] = activePlayer.getPlayerSign();
-      renderGame(gameBoard);
-      checkWin();
-      swapPlayer();
-    } else if (checkWin.win === false || tieCounter < 9) {
-      aiPlay();
+    switch (activePlayer.type) {
+      case "easyAI":
+        let randX = randomIntFromInterval(0, 2);
+        let randY = randomIntFromInterval(0, 2);
+        if (
+          gameBoard.board[randX][randY] === "" &&
+          win !== true &&
+          tieCounter < 9
+        ) {
+          gameBoard.board[randX][randY] = activePlayer.getPlayerSign();
+          renderGame(gameBoard);
+          checkWin();
+          swapPlayer();
+        } else if (win !== true && tieCounter < 9) {
+          aiPlay();
+        }
+        break;
+      case "medAI":
+        break;
+      case "hardAI":
+        break;
+      case "impAI":
+        break;
     }
   }
 
   function randomIntFromInterval(min, max) {
-    // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
-  console.log(playerOne);
-  console.log(playerTwo);
 })();
