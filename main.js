@@ -251,12 +251,13 @@
   function playerPlay() {}
 
   function aiPlay() {
+    let chance;
     switch (activePlayer.type) {
       case "easyAI":
         randomAIPlay();
         break;
       case "medAI":
-        let chance = randomIntFromInterval(0, 10);
+        chance = randomIntFromInterval(0, 10);
         if (chance <= 2) {
           minMaxAI();
         } else {
@@ -264,7 +265,7 @@
         }
         break;
       case "hardAI":
-        let chance = randomIntFromInterval(0, 10);
+        chance = randomIntFromInterval(0, 10);
         if (chance <= 5) {
           minMaxAI();
         } else {
@@ -273,6 +274,9 @@
         break;
       case "impAI":
         minMaxAI();
+        renderGame(gameBoard);
+        checkWin();
+        swapPlayer();
         break;
     }
     function randomAIPlay() {
@@ -291,7 +295,27 @@
         randomAIPlay();
       }
     }
-    function minMaxAI() {}
+    function minMaxAI() {
+      let bestScore = -Infinity;
+      let bestMove;
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (gameBoard.board[i][j] === "") {
+            gameBoard.board[i][j] = activePlayer.getPlayerSign();
+            let score = minimax(gameBoard.board);
+            gameBoard.board[i][j] = "";
+            if (score > bestScore) {
+              bestScore = score;
+              bestMove = { i, j };
+              gameBoard.board[i][j] = activePlayer.getPlayerSign();
+            }
+          }
+        }
+      }
+    }
+    function minimax(gameboard) {
+      return 1;
+    }
   }
 
   function randomIntFromInterval(min, max) {
