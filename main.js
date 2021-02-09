@@ -15,6 +15,8 @@
   let playerTwo;
   let activePlayer;
   let tieCounter = 0;
+  let win;
+  let winningSymbol;
 
   let gameStarted = false;
 
@@ -134,10 +136,10 @@
       }
     }
   }
-  let win;
+
   const checkWin = () => {
     console.log("checking win");
-    let winningSymbol;
+
     for (let i = 0; i < 3; i++) {
       let row = 0;
       for (let j = 0; j < 3; j++) {
@@ -195,6 +197,10 @@
         col = 0;
       }
     }
+    return;
+  };
+
+  function alertWin() {
     if (win === true) {
       if (playerOne.getPlayerSign() === winningSymbol) {
         alert("Player One wins!");
@@ -206,8 +212,7 @@
     if (tieCounter === 9 && win === false) {
       alert("It's a tie!");
     }
-    return;
-  };
+  }
 
   const Player = (sign) => {
     let playerSign = sign;
@@ -216,24 +221,25 @@
     return { getPlayerSign, nextTurn };
   };
 
-  renderGame(gameBoard);
-
   function startGame() {
     swapPlayer();
-    console.log(activePlayer);
+    console.log(activePlayer + "on Start");
     if (activePlayer.type !== "human" && win !== true && tieCounter < 9) {
       console.log("should only execute once");
       aiPlay();
     }
     gameBoard.boardArray.forEach((item) => {
       item.addEventListener("click", () => {
+        console.log(activePlayer.type + "human???");
         if (activePlayer.type === "human") {
+          console.log("HERE");
           let searchX = item.id.charAt(1);
           let searchY = item.id.charAt(2);
           if (gameBoard.board[searchX][searchY] === "") {
             gameBoard.board[searchX][searchY] = activePlayer.getPlayerSign();
             renderGame(gameBoard);
             checkWin();
+            alertWin();
             if (win !== true && tieCounter < 9) {
               console.log(win + " " + tieCounter);
               console.log("this is inside playeroneplay");
@@ -274,48 +280,49 @@
         break;
       case "impAI":
         minMaxAI();
-        renderGame(gameBoard);
-        checkWin();
-        swapPlayer();
         break;
     }
-    function randomAIPlay() {
-      let randX = randomIntFromInterval(0, 2);
-      let randY = randomIntFromInterval(0, 2);
-      if (
-        gameBoard.board[randX][randY] === "" &&
-        win !== true &&
-        tieCounter < 9
-      ) {
-        gameBoard.board[randX][randY] = activePlayer.getPlayerSign();
-        renderGame(gameBoard);
-        checkWin();
-        swapPlayer();
-      } else if (win !== true && tieCounter < 9) {
-        randomAIPlay();
-      }
+    renderGame(gameBoard);
+    checkWin();
+    alertWin();
+    swapPlayer();
+  }
+
+  function randomAIPlay() {
+    let randX = randomIntFromInterval(0, 2);
+    let randY = randomIntFromInterval(0, 2);
+    if (
+      gameBoard.board[randX][randY] === "" &&
+      win !== true &&
+      tieCounter < 9
+    ) {
+      gameBoard.board[randX][randY] = activePlayer.getPlayerSign();
+    } else if (win !== true && tieCounter < 9) {
+      randomAIPlay();
     }
-    function minMaxAI() {
-      let bestScore = -Infinity;
-      let bestMove;
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-          if (gameBoard.board[i][j] === "") {
+  }
+
+  function minMaxAI() {
+    let bestScore = -Infinity;
+    let bestMove;
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (gameBoard.board[i][j] === "") {
+          gameBoard.board[i][j] = activePlayer.getPlayerSign();
+          let score = minimax(gameBoard.board, 0, true);
+          gameBoard.board[i][j] = "";
+          if (score > bestScore) {
+            bestScore = score;
+            bestMove = { i, j };
             gameBoard.board[i][j] = activePlayer.getPlayerSign();
-            let score = minimax(gameBoard.board);
-            gameBoard.board[i][j] = "";
-            if (score > bestScore) {
-              bestScore = score;
-              bestMove = { i, j };
-              gameBoard.board[i][j] = activePlayer.getPlayerSign();
-            }
           }
         }
       }
     }
-    function minimax(gameboard) {
-      return 1;
-    }
+  }
+  function minimax(gameboard, depth, isMaximizing) {
+    checkWin();
+    return 1;
   }
 
   function randomIntFromInterval(min, max) {
