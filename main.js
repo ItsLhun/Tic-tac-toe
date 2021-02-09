@@ -16,7 +16,7 @@
   let activePlayer;
   let tieCounter = 0;
   let win;
-  let winningSymbol;
+  let winningSymbol = null;
 
   let gameStarted = false;
 
@@ -68,6 +68,7 @@
     win = false;
     gameStarted = false;
     tieCounter = 0;
+    winningSymbol = null;
     console.log("game reset!");
     gameBoard.board = [
       ["", "", ""],
@@ -97,14 +98,11 @@
     if (gameStarted === false) {
       if (playerOne.getPlayerSign() === "X") {
         activePlayer = playerOne;
-        console.log("active player = one");
         playerOneTitle.classList.add("active-player");
         playerTwoTitle.classList.remove("active-player");
         gameStarted = true;
       } else {
         activePlayer = playerTwo;
-        console.log("active player = two");
-
         playerOneTitle.classList.remove("active-player");
         playerTwoTitle.classList.add("active-player");
         gameStarted = true;
@@ -112,7 +110,6 @@
     } else if (win !== true) {
       if (activePlayer === playerOne) {
         activePlayer = playerTwo;
-
         playerOneTitle.classList.remove("active-player");
         playerTwoTitle.classList.add("active-player");
       } else if (activePlayer === playerTwo) {
@@ -123,7 +120,6 @@
     } else {
       return;
     }
-    console.log("Active player is: " + activePlayer + activePlayer.type);
   }
 
   function renderGame(gameBoard) {
@@ -138,8 +134,6 @@
   }
 
   const checkWin = () => {
-    console.log("checking win");
-
     for (let i = 0; i < 3; i++) {
       let row = 0;
       for (let j = 0; j < 3; j++) {
@@ -197,6 +191,9 @@
         col = 0;
       }
     }
+    if (tieCounter === 9 && win === false) {
+      winningSymbol = "Tie";
+    }
     return;
   };
 
@@ -223,16 +220,12 @@
 
   function startGame() {
     swapPlayer();
-    console.log(activePlayer + "on Start");
     if (activePlayer.type !== "human" && win !== true && tieCounter < 9) {
-      console.log("should only execute once");
       aiPlay();
     }
     gameBoard.boardArray.forEach((item) => {
       item.addEventListener("click", () => {
-        console.log(activePlayer.type + "human???");
         if (activePlayer.type === "human") {
-          console.log("HERE");
           let searchX = item.id.charAt(1);
           let searchY = item.id.charAt(2);
           if (gameBoard.board[searchX][searchY] === "") {
@@ -241,8 +234,6 @@
             checkWin();
             alertWin();
             if (win !== true && tieCounter < 9) {
-              console.log(win + " " + tieCounter);
-              console.log("this is inside playeroneplay");
               swapPlayer();
               if (activePlayer.type !== "human") {
                 aiPlay();
@@ -259,16 +250,8 @@
   function aiPlay() {
     let chance;
     switch (activePlayer.type) {
-      case "easyAI":
+      case "normalAI":
         randomAIPlay();
-        break;
-      case "medAI":
-        chance = randomIntFromInterval(0, 10);
-        if (chance <= 2) {
-          minMaxAI();
-        } else {
-          randomAIPlay();
-        }
         break;
       case "hardAI":
         chance = randomIntFromInterval(0, 10);
@@ -280,12 +263,12 @@
         break;
       case "impAI":
         minMaxAI();
+        renderGame(gameBoard);
+        checkWin();
+        alertWin();
+        swapPlayer();
         break;
     }
-    renderGame(gameBoard);
-    checkWin();
-    alertWin();
-    swapPlayer();
   }
 
   function randomAIPlay() {
@@ -303,26 +286,74 @@
   }
 
   function minMaxAI() {
+    let tieTemp = tieCounter;
     let bestScore = -Infinity;
-    let bestMove;
+    let first;
+    let second;
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         if (gameBoard.board[i][j] === "") {
-          gameBoard.board[i][j] = activePlayer.getPlayerSign();
-          let score = minimax(gameBoard.board, 0, true);
+          gameBoard.board[i][j] = playerTwo.getPlayerSign();
+          let score = minimax(gameBoard.board, 0, false);
           gameBoard.board[i][j] = "";
           if (score > bestScore) {
             bestScore = score;
-            bestMove = { i, j };
-            gameBoard.board[i][j] = activePlayer.getPlayerSign();
+            first = i;
+            second = j;
           }
         }
       }
     }
+    tieCounter = tieTemp;
+    win = false;
+    winningSymbol = null;
+    gameBoard.board[first][second] = playerTwo.getPlayerSign();
   }
-  function minimax(gameboard, depth, isMaximizing) {
+
+  function minimax(board, depth, isMaximizing) {
     checkWin();
-    return 1;
+    let result = winningSymbol;
+    if (winningSymbol !== null) {
+      switch (result) {
+        case playerTwo.getPlayerSign():
+          return 10;
+        case playerOne.getPlayerSign():
+          console.log("always here");
+          return -10;
+        default:
+          return 0;
+      }
+    }
+
+    if (isMaximizing) {
+      let bestScore = -Infinity;
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          // Is the spot available?
+          if (board[i][j] == "") {
+            board[i][j] = playerTwo.getPlayerSign();
+            let score = minimax(board, depth + 1, false);
+            board[i][j] = "";
+            bestScore = Math.max(score, bestScore);
+          }
+        }
+      }
+      return bestScore;
+    } else {
+      let bestScore = Infinity;
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          // Is the spot available?
+          if (board[i][j] == "") {
+            board[i][j] = playerOne.getPlayerSign();
+            let score = minimax(board, depth + 1, true);
+            board[i][j] = "";
+            bestScore = Math.min(score, bestScore);
+          }
+        }
+      }
+      return bestScore;
+    }
   }
 
   function randomIntFromInterval(min, max) {
