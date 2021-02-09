@@ -253,28 +253,45 @@
   function aiPlay() {
     switch (activePlayer.type) {
       case "easyAI":
-        let randX = randomIntFromInterval(0, 2);
-        let randY = randomIntFromInterval(0, 2);
-        if (
-          gameBoard.board[randX][randY] === "" &&
-          win !== true &&
-          tieCounter < 9
-        ) {
-          gameBoard.board[randX][randY] = activePlayer.getPlayerSign();
-          renderGame(gameBoard);
-          checkWin();
-          swapPlayer();
-        } else if (win !== true && tieCounter < 9) {
-          aiPlay();
-        }
+        randomAIPlay();
         break;
       case "medAI":
+        let chance = randomIntFromInterval(0, 10);
+        if (chance <= 2) {
+          minMaxAI();
+        } else {
+          randomAIPlay();
+        }
         break;
       case "hardAI":
+        let chance = randomIntFromInterval(0, 10);
+        if (chance <= 5) {
+          minMaxAI();
+        } else {
+          randomAIPlay();
+        }
         break;
       case "impAI":
+        minMaxAI();
         break;
     }
+    function randomAIPlay() {
+      let randX = randomIntFromInterval(0, 2);
+      let randY = randomIntFromInterval(0, 2);
+      if (
+        gameBoard.board[randX][randY] === "" &&
+        win !== true &&
+        tieCounter < 9
+      ) {
+        gameBoard.board[randX][randY] = activePlayer.getPlayerSign();
+        renderGame(gameBoard);
+        checkWin();
+        swapPlayer();
+      } else if (win !== true && tieCounter < 9) {
+        randomAIPlay();
+      }
+    }
+    function minMaxAI() {}
   }
 
   function randomIntFromInterval(min, max) {
