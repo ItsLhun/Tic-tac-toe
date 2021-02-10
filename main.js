@@ -198,6 +198,7 @@
   };
 
   function alertWin() {
+    checkWin();
     if (win === true) {
       if (playerOne.getPlayerSign() === winningSymbol) {
         alert("Player One wins!");
@@ -220,7 +221,7 @@
 
   function startGame() {
     swapPlayer();
-    if (activePlayer.type !== "human" && win !== true && tieCounter < 9) {
+    if (activePlayer.type !== "human" && win === false && tieCounter < 9) {
       aiPlay();
     }
     gameBoard.boardArray.forEach((item) => {
@@ -238,19 +239,20 @@
     if (gameBoard.board[searchX][searchY] === "") {
       gameBoard.board[searchX][searchY] = activePlayer.getPlayerSign();
       renderGame(gameBoard);
-      checkWin();
       alertWin();
+      swapPlayer();
+
       if (win !== true && tieCounter < 9) {
-        swapPlayer();
         aiPlay();
       }
     }
   }
 
   function aiPlay() {
-    let chance;
-    switch (activePlayer.type) {
-      case "normalAI":
+    debugger;
+    //let chance;
+    //switch (activePlayer.type) {
+    /*case "normalAI":
         randomAIPlay();
         break;
       case "hardAI":
@@ -260,13 +262,12 @@
         } else {
           randomAIPlay();
         }
-        break;
-      case "impAI":
-        minMaxAI();
-        break;
-    }
+        break;*/
+    //  case "impAI":
+    minMaxAI();
+    //  break;
+    // }
     renderGame(gameBoard);
-    checkWin();
     alertWin();
     swapPlayer();
   }
@@ -287,76 +288,78 @@
 
   function minMaxAI() {
     let tieTemp = tieCounter;
+    let tempBoard = gameBoard.board;
     let bestScore = -Infinity;
-    let first;
-    let second;
+    let moveSet;
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         if (gameBoard.board[i][j] === "") {
           gameBoard.board[i][j] = playerTwo.getPlayerSign();
-          let score = minimax(gameBoard.board, 0, false);
+          let score = minimax(gameBoard.board, 12, false);
           gameBoard.board[i][j] = "";
           if (score > bestScore) {
             console.log("new best score is " + score);
             bestScore = score;
-            first = i;
-            second = j;
+            moveSet = { i, j };
           }
         }
       }
     }
+    gameBoard.board = tempBoard;
     tieCounter = tieTemp;
     win = false;
     winningSymbol = null;
-    console.log("first " + first + "; second : " + second);
-    gameBoard.board[first][second] = playerTwo.getPlayerSign();
+    gameBoard.board[moveSet.i][moveSet.j] = playerTwo.getPlayerSign();
   }
-  let counter = 0;
+
   function minimax(board, depth, maximizes) {
     checkWin();
-
-    console.log("Counter: " + counter);
-    let result = winningSymbol;
-    if (result !== null) {
-      switch (result) {
-        case playerTwo.getPlayerSign():
-          return 10;
-        case playerOne.getPlayerSign():
-          console.log("always here");
-          return -10;
-        default:
-          return 0;
+    if (win == true || tieCounter == 9) {
+      console.log(winningSymbol);
+      if (winningSymbol == "X") {
+        return 10;
+      } else if (winningSymbol == "O") {
+        return -10;
+      } else {
+        return 0;
       }
     }
 
     if (maximizes) {
-      counter++;
       let bestScore = -Infinity;
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
           if (board[i][j] == "") {
             board[i][j] = playerTwo.getPlayerSign();
-            let score = minimax(board, depth + 1, false);
+            console.log(board);
+            let score = minimax(board, depth - 1, false);
             board[i][j] = "";
             console.log("inside maximizes");
-            bestScore = Math.max(score, bestScore);
+            if (score > bestScore) {
+              bestScore = score;
+            }
+            //  bestScore = Math.max(score, bestScore);
           }
         }
       }
       return bestScore;
     } else {
-      let nonMaxScore = Infinity;
+      let minScore = +Infinity;
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
           if (board[i][j] == "") {
             board[i][j] = playerOne.getPlayerSign();
-            let score = minimax(board, depth + 1, true);
+            let scoreTwo = minimax(board, depth - 1, true);
             board[i][j] = "";
-            nonMaxScore = Math.min(score, nonMaxScore);
+            console.log("inside minimize");
+            if (scoreTwo < minScore) {
+              minScore = scoreTwo;
+            }
+            //minScore = Math.min(scoreTwo, minScore);
           }
         }
       }
-      return nonMaxScore;
+      return minScore;
     }
   }
 
