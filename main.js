@@ -274,7 +274,7 @@
     gameBoard.board[bestPlay.i][bestPlay.j] = playerTwo.getPlayerSign();
     //minMaxAI();
       break;
-    // }
+     }
     renderGame(gameBoard);
     alertWin();
     swapPlayer();
