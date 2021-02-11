@@ -257,23 +257,23 @@
   function aiPlay() {
     //debugger;
     //let chance;
-    //switch (activePlayer.type) {
-    /*case "normalAI":
+    switch (activePlayer.type) {
+    case "normalAI":
         randomAIPlay();
         break;
-      case "hardAI":
+      /*case "hardAI":
         chance = randomIntFromInterval(0, 10);
         if (chance <= 5) {
           minMaxAI();
         } else {
-          */ randomAIPlay(); /*
+          ///randomAIPlay(); 
         }
         break;*/
-    //  case "impAI":
-    //let bestPlay = minMaxAI();
-    //gameBoard.board[bestPlay.i][bestPlay.j] = playerTwo.getPlayerSign();
+      case "impAI":
+    let bestPlay = minMaxAI();
+    gameBoard.board[bestPlay.i][bestPlay.j] = playerTwo.getPlayerSign();
     //minMaxAI();
-    //  break;
+      break;
     // }
     renderGame(gameBoard);
     alertWin();
