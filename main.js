@@ -256,14 +256,14 @@
       case "normalAI":
         randomAIPlay();
         break;
-      /*case "hardAI":
+      case "hardAI":
         chance = randomIntFromInterval(0, 10);
-        if (chance <= 5) {
+        if (chance <= 9) {
           minMaxAI();
         } else {
-          ///randomAIPlay(); 
+          randomAIPlay();
         }
-        break;*/
+        break;
       case "impAI":
         minMaxAI();
         break;
