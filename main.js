@@ -198,14 +198,18 @@
     if (result.winningSymbol !== null) {
       if (playerOne.getPlayerSign() === result.winningSymbol) {
         alert("Player One wins!");
+        return true;
       } else if (playerTwo.getPlayerSign() === result.winningSymbol) {
         alert("Player Two wins!");
+        return true;
       }
     }
     tieCounter++;
     if (tieCounter === 9 && result.winningSymbol === null) {
       alert("It's a tie!");
+      return true;
     }
+    return false;
   }
 
   const Player = (sign) => {
@@ -239,12 +243,14 @@
     if (gameBoard.board[searchX][searchY] === "") {
       gameBoard.board[searchX][searchY] = activePlayer.getPlayerSign();
       renderGame(gameBoard);
-      alertWin();
-
-      if (checkWin.winningSymbol === null && tieCounter < 9) {
+      if (!alertWin()){
         swapPlayer();
         aiPlay();
       }
+
+      //if (checkWin.winningSymbol === null && tieCounter < 9) {
+        
+     // }
     }
   }
 
