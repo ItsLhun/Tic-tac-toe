@@ -250,8 +250,6 @@
   }
 
   function aiPlay() {
-    //debugger;
-    //let chance;
     switch (activePlayer.type) {
       case "normalAI":
         randomAIPlay();
@@ -333,18 +331,18 @@
       }
       return bestScore;
     } else {
-      let bestScore = +Infinity;
+      let minScore = +Infinity;
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
           if (board[i][j] == "") {
             board[i][j] = playerOne.getPlayerSign();
             let score = minimax(board, depth + 1, true);
             board[i][j] = "";
-            bestScore = Math.min(score, bestScore);
+            minScore = Math.min(score, minScore);
           }
         }
       }
-      return bestScore;
+      return minScore;
     }
   }
 
