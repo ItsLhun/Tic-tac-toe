@@ -199,8 +199,13 @@
         alert("Player One wins!");
         return true;
       } else if (playerTwo.getPlayerSign() === result.winningSymbol) {
-        alert("Player Two wins!");
-        return true;
+        if (playerTwo.type === "human") {
+          alert("Player Two wins!");
+          return true;
+        } else {
+          alert("AI wins!");
+          return true;
+        }
       }
     }
     tieCounter++;
