@@ -270,10 +270,8 @@
         }
         break;*/
       case "impAI":
-    let bestPlay = minMaxAI();
-    gameBoard.board[bestPlay.i][bestPlay.j] = playerTwo.getPlayerSign();
-    //minMaxAI();
-      break;
+        minMaxAI();
+        break;
      }
     renderGame(gameBoard);
     alertWin();
@@ -313,8 +311,7 @@
       }
     }
     tieCounter = tieTemp;
-    checkWin.winningSymbol = null;
-    return moveSet;
+    gameBoard.board[moveSet.i][moveSet.j] = playerTwo.getPlayerSign();
   }
 
   function minimax(board, depth, maximizes) {
@@ -336,7 +333,7 @@
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
           if (board[i][j] == "") {
-            board[i][j] = "X"; //playerTwo.getPlayerSign();
+            board[i][j] = playerTwo.getPlayerSign();
             let score = minimax(board, depth + 1, false);
             board[i][j] = "";
             console.log("inside maximizes");
@@ -350,7 +347,7 @@
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
           if (board[i][j] == "") {
-            board[i][j] = "O"; //playerOne.getPlayerSign();
+            board[i][j] = playerOne.getPlayerSign();
             let scoreTwo = minimax(board, depth + 1, true);
             board[i][j] = "";
             console.log("inside minimize");
